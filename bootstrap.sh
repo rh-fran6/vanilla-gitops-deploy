@@ -17,7 +17,7 @@ do
   sleep 10;
 done
 
-oc apply -k common/clustergroup
+oc apply -k infra/clustergroup
 # echo "Installing the MultiClusterHub"
 
 # kustomize build bootstrap/advanced-cluster-management/instance/base/kustomization.yaml | oc apply -f -

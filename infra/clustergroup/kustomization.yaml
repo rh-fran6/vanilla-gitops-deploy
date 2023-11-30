@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: openshift-gitops
+
+resources:
+  - 00-openshift-gitops-application.yaml
+  - 01-acm-application.yaml
+  - 02-external-secrets-application.yaml
+  - 03-postgresql-application.yaml
+  - 04-aap-application.yaml
+  - 05-rhbk-application.yaml
+  - 06-hello-world-application.yaml
+  - 07-appproject.yaml
