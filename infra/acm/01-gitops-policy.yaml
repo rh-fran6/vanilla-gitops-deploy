@@ -77,7 +77,7 @@ spec:
         values:
           - OpenShift
       - key: local-cluster
-        operator: NotIn
+        operator: In
         values:
           - 'true'
 
