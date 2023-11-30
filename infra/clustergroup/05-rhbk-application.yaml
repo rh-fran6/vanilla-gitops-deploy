@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: rhbk-sso
   namespace: ngc-hub
-  labels:
-    validatedpatterns.io/pattern: ngc
   finalizers:
   - resources-finalizer.argocd.argoproj.io/foreground
 spec:
