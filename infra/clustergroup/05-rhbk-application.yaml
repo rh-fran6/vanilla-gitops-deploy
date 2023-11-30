@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rhbk-sso
+  namespace: ngc-hub
+  labels:
+    validatedpatterns.io/pattern: ngc
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  destination:
+    name: in-cluster
+    namespace: rhbk-sso
+  project: hub
+  source:
+    repoURL: https://github.com/rh-fran6/vanilla-gitops-deploy.git
+    targetRevision: main
+    path: infra/redhat-keycloak/overlays/stable-v22
+  syncPolicy:
+    automated: {}
+    retry:
+      limit: 20

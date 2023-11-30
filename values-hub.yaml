@@ -1,0 +1,78 @@
+clusterGroup:
+  name: hub
+  isHubCluster: true
+
+  namespaces:
+    - open-cluster-management
+    - hello-world
+    - external-secrets-operator
+    - ansible-automation-platform
+    - postgresql
+    - rhbk-sso
+
+  subscriptions:
+    acm:
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+      channel: release-2.8
+      
+  projects:
+    - hub
+    - hello-world
+    - postgresql
+
+  applications:
+    acm:
+      name: acm
+      namespace: open-cluster-management
+      project: hub
+      path: common/acm
+      ignoreDifferences:
+      - group: internal.open-cluster-management.io
+        kind: ManagedClusterInfo
+        jsonPointers:
+          - /spec/loggingCA
+      
+    aap-instance:
+      name: ansible-automation-platform
+      namespace: aap
+      project: hub
+      kustomize: true
+      path: common/ansible-automation-platform/overlays/default
+
+    rhbk:
+      name: rhbk-sso
+      namespace: rhbk-sso
+      project: hub
+      kustomize: true
+      path: common/redhat-keycloak/overlays/stable-v22
+    
+    external-secrets-operator:
+      name: external-secrets-operator
+      namespace: external-secrets-operator
+      project: hub
+      path: common/external-secrets-operator
+
+    hello-world:
+      name: hello-world
+      namespace: hello-world
+      project: hello-world
+      path: charts/all/hello-world
+
+    postgresql:
+      name: postgresql
+      namespace: postgresql
+      project: postgresql
+      path: charts/all/postgresql
+
+  imperative:
+
+  managedClusterGroups:
+    exampleRegion:
+      name: group-one
+      acmlabels:
+      - name: clusterGroup
+        value: group-one
+      helmOverrides:
+      - name: clusterGroup.isHubCluster
+        value: false

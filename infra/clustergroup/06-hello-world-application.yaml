@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world
+  namespace: ngc-hub
+  labels:
+    validatedpatterns.io/pattern: ngc
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  destination:
+    name: in-cluster
+    namespace: hello-world
+  project: hello-world
+  source:
+    repoURL: https://github.com/rh-fran6/vanilla-gitops-deploy.git
+    targetRevision: main
+    path: charts/all/hello-world
+    helm:
+      ignoreMissingValueFiles: true
+      # valueFiles:
+      # - "/values-global.yaml"
+      # - "/values-example.yaml" 
+      # parameters:
+      #   - name: global.repoURL
+      #     value: $ARGOCD_APP_SOURCE_REPO_URL
+      #   - name: global.targetRevision
+      #     value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+      #   - name: global.namespace
+      #     value: $ARGOCD_APP_NAMESPACE
+      #   - name: global.pattern
+      #     value: common
+      #   - name: global.clusterDomain
+      #     value: 
+      #   - name: global.clusterVersion
+      #     value: ""
+      #   - name: global.clusterPlatform
+      #     value: ""
+      #   - name: global.hubClusterDomain
+      #     value: 
+      #   - name: global.localClusterDomain
+      #     value: 
+  syncPolicy:
+    automated: {}
+    retry:
+      limit: 20

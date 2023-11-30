@@ -1,0 +1,44 @@
+global:
+  options:
+    useCSV: False
+    syncPolicy: Automatic
+    installPlanApproval: Automatic
+
+clusterGroup:
+  name: group-one
+  isHubCluster: false
+
+  namespaces:
+    - hello-world
+    - external-secrets-operator
+    - postgresql
+
+  subscriptions:
+
+  projects:
+    - eso
+    - hello-world
+    - postgresql
+
+  applications:
+    
+    external-secrets-operator:
+      name: external-secrets-operator
+      namespace: external-secrets-operator
+      project: eso
+      path: common/external-secrets-operator
+
+    hello-world:
+      name: hello-world
+      namespace: hello-world
+      project: hello-world
+      path: charts/all/hello-world
+
+    postgresql:
+      name: postgresql
+      namespace: postgresql
+      project: postgresql
+      path: charts/all/postgresql
+      
+
+  imperative:

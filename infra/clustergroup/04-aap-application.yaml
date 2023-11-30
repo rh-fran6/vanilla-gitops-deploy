@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ansible-automation-platform
+  namespace: ngc-hub
+  labels:
+    validatedpatterns.io/pattern: ngc
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io/foreground
+spec:
+  destination:
+    name: in-cluster
+    namespace: aap
+  project: hub
+  source:
+    repoURL: https://github.com/rh-fran6/vanilla-gitops-deploy.git
+    targetRevision: main
+    path: infra/ansible-automation-platform/overlays/default
+  syncPolicy:
+    automated: {}
+    retry:
+      limit: 20
