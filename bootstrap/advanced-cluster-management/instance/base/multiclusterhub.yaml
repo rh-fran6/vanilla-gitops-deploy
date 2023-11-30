@@ -5,4 +5,6 @@ metadata:
   name: multiclusterhub
   namespace: open-cluster-management
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "-1"
+    installer.open-cluster-management.io/mce-subscription-spec: '{"source": "redhat-operators" }'
+spec: {}

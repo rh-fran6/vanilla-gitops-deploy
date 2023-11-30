@@ -17,19 +17,33 @@ do
   sleep 10;
 done
 
+echo "Installing the MultiClusterHub"
+
+kustomize build bootstrap/advanced-cluster-management/instance/base/ | oc apply -f -
+
+echo "Waiting for hub to be installed"
+
+until [[ $(oc get multiclusterhub multiclusterhub -n open-cluster-management -o jsonpath='{.status.phase}') == 'Running' ]]
+do
+  echo "Waiting for hub, current status:"
+  oc get multiclusterhub multiclusterhub -n open-cluster-management
+  sleep 10
+done
+
+echo "Installing the Base OpenShift GitOps"
+
+kustomize build bootstrap/advanced-cluster-management/base-gitops/ | oc apply -f -
+
+echo "Waiting for Gitops to be fully installed"
+
+until  [[  $(oc get deployment openshift-gitops-server -n openshift-gitops) ]] 
+do
+  echo "Waiting for base OpenShift Gitops, current status:"
+  oc get deployment openshift-gitops-server -n openshift-gitops
+  sleep 10
+done
+
 oc apply -k infra/clustergroup
-# echo "Installing the MultiClusterHub"
-
-# kustomize build bootstrap/advanced-cluster-management/instance/base/kustomization.yaml | oc apply -f -
-
-# echo "Waiting for hub to be installed"
-
-# until [[ $(oc get multiclusterhub multiclusterhub -n open-cluster-management -o jsonpath='{.status.phase}') == 'Running' ]]
-# do
-#   echo "Waiting for hub, current status:"
-#   oc get multiclusterhub multiclusterhub -n open-cluster-management
-#   sleep 10
-# done
 
 # echo "Installing policies and initial secrets"
 
